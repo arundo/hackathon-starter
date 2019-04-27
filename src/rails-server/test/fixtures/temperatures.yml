@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  time: MyString
+  current_temp: MyString
+  target_temp: MyString
+  outside_temp: MyString
+
+two:
+  time: MyString
+  current_temp: MyString
+  target_temp: MyString
+  outside_temp: MyString
