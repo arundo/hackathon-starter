@@ -2,6 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import { Router, Link } from '@reach/router'
 import styled from 'styled-components'
+import Dashboard from './Dashboard.jsx'
 import '../styles/app.scss'
 
 const CenteredDiv = styled.div`
@@ -26,6 +27,7 @@ export default function App() {
   return (
     <CenteredDiv>
       <p>Welcome to the Arundo <em>Women's 2019 Hackathon</em></p>
+      <Dashboard />
     </CenteredDiv>
   )
 }
