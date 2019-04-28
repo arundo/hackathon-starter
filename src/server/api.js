@@ -36,8 +36,6 @@ const aggregate = data => {
   })
 }
 
-app.get('/')
-
 app.get('/daily', async (req, res) => {
   const { date, interval, csv } = req.query
 
