@@ -34,6 +34,7 @@
     "eslint": "^5.16.0",
     "fs-extra": "^7.0.1",
     "fuse-box": "^3.7.1",
+    "moment": "^2.24.0",
     "node-sass": "^4.11.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
