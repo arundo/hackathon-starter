@@ -5,14 +5,14 @@ import {
   XAxis,
   YAxis,
   HorizontalGridLines,
-  LineSeries,
-  AreaSeries
+  AreaSeries,
+  DiscreteColorLegendItem
 } from 'react-vis'
 import { async } from 'rxjs/internal/scheduler/async';
 
 const Dashboard = () => {
   const [data, setData] = useState([])
-  const [date, setDate] = useState('2016/10/02')
+  const [date, setDate] = useState('2018/11/01')
   const [intv, setintv] = useState('2')
   const [dateText, setDateText] = useState('')
   const [intvText, setIntvText] = useState('')
@@ -26,8 +26,7 @@ const Dashboard = () => {
   }, [])
 
   const getData = async () => {
-    const res = await axios.get(`http://localhost:3000/api/daily?date=${dateText}&interval=${intvText}`)
-    console.log({res})
+    const res = await axios.get(`http://localhost:3000/api/daily?date=${dateText || date}&interval=${intvText || intv}`)
     setData(res.data)
   }
 
@@ -35,15 +34,28 @@ const Dashboard = () => {
 
   return (
     <div>
-      <XYPlot width={300} height={300}>
-        <AreaSeries data={data.map(item => ({x: item.time, y: item.outside_temp}))} opacity={0.25} />
+      <XYPlot width={1000} height={400}>
+        <AreaSeries data={data.map(item => (
+          { x: item.time, y: item.outside_temp }))}
+          opacity={0.25}
+          color="#DB463B"
+        />
         <HorizontalGridLines />
-        <AreaSeries data={data.map(item => ({x: item.time, y: item.current_temp}))} opacity={0.25} />
-        <AreaSeries data={data.map(item => ({x: item.time, y: item.target_temp}))} opacity={0.25} />
+        <AreaSeries data={data.map(item => (
+          { x: item.time, y: item.current_temp }))}
+          opacity={0.25}
+          color="#DA3F6D"
+        />
+        <AreaSeries data={data.map(item => (
+          { x: item.time, y: item.target_temp }))}
+          opacity={0.25}
+          color="#7548C9"
+        />
         <XAxis />
         <YAxis />
       </XYPlot>
       <input
+        type="date"
         value={dateText}
         onChange={e => setDateText(e.target.value)}
       />

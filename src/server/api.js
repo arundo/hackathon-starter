@@ -36,39 +36,39 @@ const aggregate = data => {
   })
 }
 
-app.get('/daily', async (req, res) => {
+app.get('/daily', (req, res) => {
   const { date, interval, csv } = req.query
 
-  const startDate = new Date(date)
-  const endDate = new Date(date)
+  let timeInterval = Number(interval)
 
-  const keys = eachDay(startDate, endDate).map(getKeyFromDate)
-  const response = keys.reduce((acc, curr) => {
-    return [...acc, ...data[curr]]
-  }, [])
+  let dateISO
+  try {dateISO = getKeyFromDate(new Date(date))}
+  catch (err){ console.log({err}) }
 
-  let time = Number(interval)
+  const dailyData = data[dateISO]
 
-  const groupData = response.reduce((acc, res) => {
-    if (parseTime(res.time) < time) {
-      acc[acc.length-1].push(res)
-    } else {
-      acc.push([res])
-      time = time + Number(interval)
-    }
-    return acc
-  }, [[]])
-  
-  const aggData = groupData.map(data => aggregate(data))
-
-  if (!aggData) {
-    return res.send(`No data found for provided date`).status(404)
-  }
-
-  if (csv) {
-    res.csv(aggData)
+  if (!dateISO) {
+    res.status(400).json({error: "Invalid date format"})
+  } else if (!dailyData) {
+    res.status(400).json({error: "No data found for provided date"})
   } else {
-    res.json(aggData).status(200)
+    const groupData = dailyData.reduce((acc, res) => {
+      if (parseTime(res.time) < timeInterval) {
+        acc[acc.length-1].push(res)
+      } else {
+        acc.push([res])
+        timeInterval = timeInterval + Number(interval)
+      }
+      return acc
+    }, [[]])
+  
+    const aggData = groupData.map(data => aggregate(data))
+  
+    if (csv) {
+      res.csv(aggData)
+    } else {
+      res.json(aggData).status(200)
+    }
   }
 })
 
