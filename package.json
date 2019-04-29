@@ -8,7 +8,7 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "node .build/dev",
-    "build": "node .build/build"
+    "build": "node build/build"
   },
   "author": "Kevin R. Whitley <kevin.whitley@arundo.com>",
   "license": "UNLICENSED",
@@ -41,6 +41,7 @@
     "react-dom": "^16.8.6",
     "react-vis": "^1.11.7",
     "styled-components": "^4.2.0",
-    "typescript": "^3.4.5"
+    "typescript": "^3.4.5",
+    "uglify-es": "^3.3.9"
   }
 }
