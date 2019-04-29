@@ -8,7 +8,7 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "node .build/dev",
-    "build": "node build/build"
+    "build": "node .build/build"
   },
   "author": "Kevin R. Whitley <kevin.whitley@arundo.com>",
   "license": "UNLICENSED",
