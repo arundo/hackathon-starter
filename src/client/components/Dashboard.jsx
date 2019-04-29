@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import moment from 'moment'
+import styled from 'styled-components'
 import {
-  XYPlot,
+  FlexibleXYPlot,
   XAxis,
   YAxis,
   HorizontalGridLines,
   AreaSeries,
   LineSeries,
-  DiscreteColorLegendItem
+  DiscreteColorLegend
 } from 'react-vis'
-// import { async } from 'rxjs/internal/scheduler/async';
+
+import {
+  TitleBoard,
+  TitleContainer,
+  GraphContainer,
+  DashboardContainer
+} from './Styled.jsx'
 
 const Dashboard = () => {
   const [data, setData] = useState([])
@@ -36,54 +43,100 @@ const Dashboard = () => {
   }
 
   return (
-    <div>
+    <DashboardContainer>
+      <TitleContainer>
+        <TitleBoard>
+          <h3>Daily Temperature From an Indoor Thermostat</h3>
+          <div>
+            <button onClick={() => { setDate(moment(date).add(-7, 'days').format('YYYY-MM-DD')) }} >
+              {'<<'}
+            </button>
+            <button onClick={() => { setDate(moment(date).add(-1, 'days').format('YYYY-MM-DD')) }} >
+              {'<'}
+            </button>
+            <input
+              type="date"
+              value={date}
+              onChange={e => {
+                setDate(e.target.value)
+                getData()
+              }}
+            />
+            <button onClick={() => { setDate(moment(date).add(1, 'days').format('YYYY-MM-DD')) }} >
+              >
+            </button>
+            <button onClick={() => { setDate(moment(date).add(7, 'days').format('YYYY-MM-DD')) }} >
+              >>
+            </button>
+          </div>
+        </TitleBoard>
+        <div>
+          <DiscreteColorLegend
+            items={[
+                {title: 'current temp', color: '#0182C8', strokeWidth:'3px'},
+                {title: 'target temp', color: '#6C8893', strokeWidth:'3px'},
+                {title: 'outside temp', color: 'pink', strokeWidth:'3px'},
+              ]}
+            orientation="horizontal"
+          />
+        </div>
+      </TitleContainer>
       {
-        data.length === 0 && <div style={{width: 1000, height: 400}}> No Data </div>
+        data.length === 0 &&
+        <GraphContainer>
+          <p>Data Not Available</p>
+          <p>Please Pick A Date Between: 11/01/2018 - 03/06/2019</p>
+        </GraphContainer>
       }
       {
         data.length !== 0 &&
-        <XYPlot width={1000} height={400}>
-          <LineSeries data={data.map(item => (
-            { x: item.time, y: item.outside_temp }))}
-            opacity={0.25}
-            color="#DB463B"
-          />
-          <HorizontalGridLines />
-          <LineSeries data={data.map(item => (
-            { x: item.time, y: item.current_temp }))}
-            opacity={0.25}
-            color="#DA3F6D"
-          />
-          <LineSeries data={data.map(item => (
-            { x: item.time, y: item.target_temp }))}
-            opacity={0.25}
-            color="#7548C9"
-          />
-          <XAxis />
-          <YAxis />
-        </XYPlot>
+        <GraphContainer>
+          <FlexibleXYPlot yDomain={[30,100]}>
+            <HorizontalGridLines />
+            <XAxis
+              attr="x"
+              attrAxis="y"
+              orientation="bottom"
+              tickFormat={function tickFormat(d){return `${d}:00`}}
+              title="local time"
+            />
+            <YAxis
+              attr="y"
+              attrAxis="x"
+              orientation="left"
+              title="°F"
+            />
+            <LineSeries data={data.map(item => (
+              { x: item.time, y: item.outside_temp }))}
+              opacity={.75}
+              color="pink"
+              strokeStyle="solid"
+              style={{}}
+              curve="curveBasis"
+              strokeWidth="3px"
+            />
+            <LineSeries data={data.map(item => (
+              { x: item.time, y: item.current_temp }))}
+              opacity={.75}
+              color="#0182C8"
+              strokeStyle="solid"
+              style={{}}
+              curve="curveBasis"
+              strokeWidth="3px"
+            />
+            <LineSeries data={data.map(item => (
+              { x: item.time, y: item.target_temp }))}
+              opacity={.75}
+              color="#6C8893"
+              strokeStyle="solid"
+              style={{}}
+              curve="curveBasis"
+              strokeWidth="3px"
+            />
+          </FlexibleXYPlot>
+        </GraphContainer>
       }
-      <button onClick={() => { setDate(moment(date).add(-7, 'days').format('YYYY-MM-DD')) }} >
-        {'<<'}
-      </button>
-      <button onClick={() => { setDate(moment(date).add(-1, 'days').format('YYYY-MM-DD')) }} >
-        {'<'}
-      </button>
-      <input
-        type="date"
-        value={date}
-        onChange={e => {
-          setDate(e.target.value)
-          getData()
-        }}
-      />
-      <button onClick={() => { setDate(moment(date).add(1, 'days').format('YYYY-MM-DD')) }} >
-        >
-      </button>
-      <button onClick={() => { setDate(moment(date).add(7, 'days').format('YYYY-MM-DD')) }} >
-        >>
-      </button>
-    </div>
+    </DashboardContainer>
   )
 }
 
