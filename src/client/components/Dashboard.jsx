@@ -7,7 +7,6 @@ import {
   XAxis,
   YAxis,
   HorizontalGridLines,
-  AreaSeries,
   LineSeries,
   DiscreteColorLegend
 } from 'react-vis'
@@ -21,12 +20,8 @@ import {
 
 const Dashboard = () => {
   const [data, setData] = useState([])
-  const [dateText, setDateText] = useState('')
-  const [intvText, setIntvText] = useState('')
   const [date, setDate] = useState('2018-11-01')
   const [intv, setIntv] = useState(2)
-
-  const refDate = React.createRef
 
   useEffect(() => {
     date
@@ -35,7 +30,7 @@ const Dashboard = () => {
 
   const getData = async () => {
     try{
-      const res = await axios.get(`https://mysterious-garden-30716.herokuapp.com/api/daily?date=${moment(date).format('YYYY/MM/DD')}&interval=${intv}`)
+      const res = await axios.get(`http://localhost:3000/api/daily?date=${moment(date).format('YYYY/MM/DD')}&interval=${intv}`)
       setData(res.data)
     } catch (err) {
       setData([])
@@ -59,7 +54,6 @@ const Dashboard = () => {
               value={date}
               onChange={e => {
                 setDate(e.target.value)
-                getData()
               }}
             />
             <button onClick={() => { setDate(moment(date).add(1, 'days').format('YYYY-MM-DD')) }} >
@@ -73,9 +67,9 @@ const Dashboard = () => {
         <div>
           <DiscreteColorLegend
             items={[
-                {title: 'current temp', color: '#0182C8', strokeWidth:'3px'},
-                {title: 'target temp', color: '#6C8893', strokeWidth:'3px'},
-                {title: 'outside temp', color: 'pink', strokeWidth:'3px'},
+                {title: 'current temp', color: '#0182C8', strokeWidth:3},
+                {title: 'target temp', color: '#6C8893', strokeWidth:3},
+                {title: 'outside temp', color: 'pink', strokeWidth:3},
               ]}
             orientation="horizontal"
           />
@@ -113,7 +107,8 @@ const Dashboard = () => {
               strokeStyle="solid"
               style={{}}
               curve="curveBasis"
-              strokeWidth="3px"
+              strokeWidth={3}
+              onNearestX={(value) => {console.log(value)}}
             />
             <LineSeries data={data.map(item => (
               { x: item.time, y: item.current_temp }))}
@@ -122,7 +117,7 @@ const Dashboard = () => {
               strokeStyle="solid"
               style={{}}
               curve="curveBasis"
-              strokeWidth="3px"
+              strokeWidth={3}
             />
             <LineSeries data={data.map(item => (
               { x: item.time, y: item.target_temp }))}
@@ -131,7 +126,7 @@ const Dashboard = () => {
               strokeStyle="solid"
               style={{}}
               curve="curveBasis"
-              strokeWidth="3px"
+              strokeWidth={3}
             />
           </FlexibleXYPlot>
         </GraphContainer>
