@@ -46,7 +46,7 @@ export default function App() {
   const [socket, setSocket] = useState(null)
 
   useEffect(
-    () => { setSocket(socketIOClient('http://localhost:3000')) },
+    () => { setSocket(socketIOClient('https://mysterious-garden-30716.herokuapp.com')) },
     []
   )
 
