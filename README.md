@@ -11,6 +11,8 @@ Arundo Women's 2019 Hackathon
 # Original Submission:
 - ``` git checkout original ```
 
+# Screenshots
+- Find screenshot images of original and updated App in `/images`
 
 # Requirements
 - [Node (current, v10+)](https://nodejs.org/en/download/current/)
