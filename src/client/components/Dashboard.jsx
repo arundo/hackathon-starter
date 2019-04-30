@@ -8,7 +8,8 @@ import {
   YAxis,
   HorizontalGridLines,
   LineSeries,
-  DiscreteColorLegend
+  DiscreteColorLegend,
+  MarkSeries
 } from 'react-vis'
 
 import {
@@ -21,7 +22,10 @@ import {
 const Dashboard = () => {
   const [data, setData] = useState([])
   const [date, setDate] = useState('2018-11-01')
-  const [intv, setIntv] = useState(2)
+  const [intv, setIntv] = useState(1)
+  const [cTempLine, setCTempLine] = useState(null)
+  const [tTempLine, setTTempLine] = useState(null)
+  const [oTempLine, setOTempLine] = useState(null)
 
   useEffect(() => {
     date
@@ -85,7 +89,14 @@ const Dashboard = () => {
       {
         data.length !== 0 &&
         <GraphContainer>
-          <FlexibleXYPlot yDomain={[30,100]}>
+          <FlexibleXYPlot
+            yDomain={[30, 100]}
+            onMouseLeave={() => {
+              setCTempLine(null)
+              setOTempLine(null)
+              setTTempLine(null)
+            }}
+          >
             <HorizontalGridLines />
             <XAxis
               attr="x"
@@ -108,8 +119,30 @@ const Dashboard = () => {
               style={{}}
               curve="curveBasis"
               strokeWidth={3}
-              onNearestX={(value) => {console.log(value)}}
+              onNearestX={(value) => setOTempLine(value)}
             />
+            {
+              oTempLine &&
+              <LineSeries
+                data={[
+                  {x: oTempLine && oTempLine.x, y: 30},
+                  {x: oTempLine && oTempLine.x, y: 100}
+                ]}
+                stroke='lightgray'
+                strokeStyle='dashed'
+                strokeWidth={1}
+              />
+            }
+            {
+              oTempLine &&
+              <MarkSeries
+                data={[{
+                  x: oTempLine && oTempLine.x,
+                  y: oTempLine && oTempLine.y
+                }]}
+                color='pink'
+              />
+            }
             <LineSeries data={data.map(item => (
               { x: item.time, y: item.current_temp }))}
               opacity={.75}
@@ -118,7 +151,18 @@ const Dashboard = () => {
               style={{}}
               curve="curveBasis"
               strokeWidth={3}
+              onNearestX={(value) => setCTempLine(value)}
             />
+            {
+              cTempLine &&
+              <MarkSeries
+                data={[{
+                  x: cTempLine && cTempLine.x,
+                  y: cTempLine && cTempLine.y
+                }]}
+                color='#0182C8'
+              />
+            }
             <LineSeries data={data.map(item => (
               { x: item.time, y: item.target_temp }))}
               opacity={.75}
@@ -127,7 +171,18 @@ const Dashboard = () => {
               style={{}}
               curve="curveBasis"
               strokeWidth={3}
+              onNearestX={(value) => setTTempLine(value)}
             />
+            {
+              tTempLine &&
+              <MarkSeries
+                data={[{
+                  x: tTempLine && tTempLine.x,
+                  y: tTempLine && tTempLine.y
+                }]}
+                color='#6C8893'
+              />
+            }
           </FlexibleXYPlot>
         </GraphContainer>
       }
