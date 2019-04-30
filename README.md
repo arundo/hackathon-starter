@@ -1,4 +1,13 @@
-Arundo Women's 2019 Hackathon Starter Kit
+Arundo Women's 2019 Hackathon
+
+# Deployed App:
+- [For client side](https://mysterious-garden-30716.herokuapp.com/)
+- For server side API example:
+  ```js
+    https://mysterious-garden-30716.herokuapp.com/api/daily?date=2018/12/12&interval=2
+  ```
+  * interval is in hour
+
 
 # Requirements
 - [Node (current, v10+)](https://nodejs.org/en/download/current/)
