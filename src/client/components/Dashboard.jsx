@@ -34,7 +34,7 @@ const Dashboard = () => {
 
   const getData = async () => {
     try{
-      const res = await axios.get(`http://localhost:3000/api/daily?date=${moment(date).format('YYYY/MM/DD')}&interval=${intv}`)
+      const res = await axios.get(`https://mysterious-garden-30716.herokuapp.com/api/daily?date=${moment(date).format('YYYY/MM/DD')}&interval=${intv}`)
       setData(res.data)
     } catch (err) {
       setData([])
