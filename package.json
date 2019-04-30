@@ -1,10 +1,10 @@
 {
   "name": "@arundo/hackathon-starter",
   "version": "0.1.0",
-  "description": "Starter environment for Women's 2019 Hackathon",
+  "description": "Some cool things with pets",
   "main": "core.js",
   "target": "esnext",
-  "title": "Women's Hackathon 2019 Starter",
+  "title": "Pets App",
   "scripts": {
     "start": "node dist/server.js",
     "dev": "node .build/dev",
