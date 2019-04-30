@@ -38,6 +38,8 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "styled-components": "^4.2.0",
-    "typescript": "^3.4.5"
+    "terser": "^3.17.0",
+    "typescript": "^3.4.5",
+    "uglify-es": "^3.3.9"
   }
 }
