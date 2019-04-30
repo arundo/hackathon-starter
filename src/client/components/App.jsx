@@ -46,11 +46,11 @@ export default function App() {
   const [socket, setSocket] = useState(null)
 
   useEffect(
-    () => { setSocket(socketIOClient('https://mysterious-garden-30716.herokuapp.com/g')) },
+    () => { setSocket(socketIOClient('https://mysterious-garden-30716.herokuapp.com')) },
     []
   )
 
-  
+
   return (
     <CenteredDiv>
       <h1>Welcome to the <span id='arundo'>Arundo</span> <em>Women's 2019 Hackathon</em></h1>
