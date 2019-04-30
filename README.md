@@ -8,6 +8,9 @@ Arundo Women's 2019 Hackathon
   ```
   * interval is in hour
 
+# Original Submission:
+- ``` git checkout original ```
+
 
 # Requirements
 - [Node (current, v10+)](https://nodejs.org/en/download/current/)
