@@ -1,31 +1,32 @@
-import React from 'react'
+import React, { useState } from 'react'
 import classNames from 'classnames'
 import { Router, Link } from '@reach/router'
+import { useStore } from '@kwhitley/use-store'
 import styled from 'styled-components'
+import { ListOfPets } from './ListOfPets'
 import '../styles/app.scss'
-
-const CenteredDiv = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 2em 2em 5em;
-  font-size: 4vmax;
-
-  em {
-    color: pink;
-    font-style: normal;
-    font-size: 1.3em;
-    display: block;
-  }
-`
+import './App.scss'
+import { usePets } from '../hooks/usePets'
 
 export default function App() {
+  const {
+    pets,
+    isLoading,
+    agePet,
+    removePet,
+  } = usePets()
+
   return (
-    <CenteredDiv>
-      <p>Welcome to the Arundo <em>Women's 2019 Hackathon</em></p>
-    </CenteredDiv>
+    <div className="page">
+      {
+        isLoading
+        ? 'Loading pets...'
+        : <ListOfPets
+            pets={pets}
+            ageAction={agePet}
+            removeAction={removePet}
+            />
+      }
+    </div>
   )
 }
