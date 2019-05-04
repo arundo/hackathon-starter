@@ -34,6 +34,6 @@ yarn dev
 # Example API & Data source (Nest thermostat)
 ```js
 http://localhost:3000/api/thermostat?startDate=2016/11/01&endDate=2016/11/02
-
+bloop
 # raw data.csv & data.json are located in /src/server/data
 ```
