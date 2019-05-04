@@ -1,7 +1,7 @@
 import express from 'express'
 import fs from 'fs'
 import { eachDay } from 'date-fns'
-import data from './data'
+import { data } from './data'
 import ('csv-express')
 
 

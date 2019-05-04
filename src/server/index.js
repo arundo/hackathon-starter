@@ -2,16 +2,41 @@ import express from '@supergeneric/express-server'
 import api from './api'
 import http from 'http'
 import socketIO from 'socket.io'
+import data from './data/data.json'
+import { transformRecord } from './data'
  
 const app = express()
 const httpServer = http.Server(app)
 const io = socketIO(httpServer)
 
-io.on('connection', socket => console.log('a user is connected'))
+let numConnected = 0
+let streamInt
+
 io.on('connection', socket => {
-  socket.on('msg_in', () => {
-    console.log('messsage in')
-    io.emit('msg_in', 'something here')
+  numConnected += 1
+  console.log({numConnected})
+
+  socket.on('disconnect', () => {
+    console.log('a user just disconnected')
+    numConnected -= 1
+    console.log({numConnected})
+    
+    if (numConnected === 0) {
+      console.log('this should clear interval')
+      clearInterval(streamInt)
+      streamInt = null
+    }
+  })
+
+  socket.on('stream', () => {
+    let i = 0
+    if (!streamInt) {
+      console.log('Streaming New')
+      streamInt = setInterval(() => {
+        io.emit('stream_in', transformRecord(data[i]) || {})
+        i++
+      },5000)
+    }
   })
 })
 

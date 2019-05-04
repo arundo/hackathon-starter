@@ -26,10 +26,11 @@ const Dashboard = ({ socket }) => {
   const [cTempLine, setCTempLine] = useState(null)
   const [tTempLine, setTTempLine] = useState(null)
   const [oTempLine, setOTempLine] = useState(null)
-  const [textStream, setTextStream] = useState('no text')
+  const [streamObj, setStreamObj] = useState({})
   
   useEffect(() => {
-    socket && socket.on('msg_in', msg => setTextStream(msg))
+    socket && socket.on('stream_in', obj => setStreamObj(obj) )
+    socket && socket.emit('stream')
   }, [socket])
 
   useEffect(() => {
@@ -37,9 +38,12 @@ const Dashboard = ({ socket }) => {
     getData()
   }, [date])
 
+  useEffect(() => {
+    console.log(streamObj)
+  }, [streamObj])
+
   const getData = async () => {
     try {
-      socket && socket.emit('msg_in')
       const res = await axios.get(`${process.env.MODE ? 'https://mysterious-garden-30716.herokuapp.com' : 'http://localhost:3000'}/api/daily?date=${moment(date).format('YYYY/MM/DD')}&interval=${intv}`)
       setData(res.data)
     } catch (err) {
@@ -52,7 +56,6 @@ const Dashboard = ({ socket }) => {
       <TitleContainer>
         <TitleBoard>
           <h3>Daily Temperature From an Indoor Thermostat</h3>
-          <h4>{textStream}</h4>
           <div>
             <button onClick={() => { setDate(moment(date).add(-7, 'days').format('YYYY-MM-DD')) }} >
               {'<<'}
