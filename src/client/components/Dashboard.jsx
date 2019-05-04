@@ -19,13 +19,18 @@ import {
   DashboardContainer
 } from './Styled.jsx'
 
-const Dashboard = () => {
+const Dashboard = ({ socket }) => {
   const [data, setData] = useState([])
   const [date, setDate] = useState('2018-11-01')
   const [intv, setIntv] = useState(1)
   const [cTempLine, setCTempLine] = useState(null)
   const [tTempLine, setTTempLine] = useState(null)
   const [oTempLine, setOTempLine] = useState(null)
+  const [textStream, setTextStream] = useState('no text')
+  
+  useEffect(() => {
+    socket && socket.on('msg_in', msg => setTextStream(msg))
+  }, [socket])
 
   useEffect(() => {
     date
@@ -33,7 +38,8 @@ const Dashboard = () => {
   }, [date])
 
   const getData = async () => {
-    try{
+    try {
+      socket && socket.emit('msg_in')
       const res = await axios.get(`http://localhost:3000/api/daily?date=${moment(date).format('YYYY/MM/DD')}&interval=${intv}`)
       setData(res.data)
     } catch (err) {
@@ -46,6 +52,7 @@ const Dashboard = () => {
       <TitleContainer>
         <TitleBoard>
           <h3>Daily Temperature From an Indoor Thermostat</h3>
+          <h4>{textStream}</h4>
           <div>
             <button onClick={() => { setDate(moment(date).add(-7, 'days').format('YYYY-MM-DD')) }} >
               {'<<'}

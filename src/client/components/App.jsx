@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import classNames from 'classnames'
 import { Router, Link } from '@reach/router'
 import styled from 'styled-components'
 import Dashboard from './Dashboard.jsx'
+import socketIOClient from 'socket.io-client'
 import '../styles/app.scss'
 
 const CenteredDiv = styled.div`
@@ -42,10 +43,17 @@ const CenteredDiv = styled.div`
 `
 
 export default function App() {
+  const [socket, setSocket] = useState(null)
+
+  useEffect(
+    () => { setSocket(socketIOClient('http://localhost:3000')) },
+    []
+  )
+
   return (
     <CenteredDiv>
       <h1>Welcome to the <span id='arundo'>Arundo</span> <em>Women's 2019 Hackathon</em></h1>
-      <Dashboard />
+      <Dashboard socket={socket} />
     </CenteredDiv>
   )
 }
