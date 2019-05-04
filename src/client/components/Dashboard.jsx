@@ -38,12 +38,8 @@ const Dashboard = ({ socket }) => {
   }, [date])
 
   const getData = async () => {
-<<<<<<< HEAD
     try {
       socket && socket.emit('msg_in')
-=======
-    try{
->>>>>>> update api to deployed backend
       const res = await axios.get(`https://mysterious-garden-30716.herokuapp.com/api/daily?date=${moment(date).format('YYYY/MM/DD')}&interval=${intv}`)
       setData(res.data)
     } catch (err) {
