@@ -40,7 +40,7 @@ const Dashboard = ({ socket }) => {
   const getData = async () => {
     try {
       socket && socket.emit('msg_in')
-      const res = await axios.get(`https://mysterious-garden-30716.herokuapp.com/api/daily?date=${moment(date).format('YYYY/MM/DD')}&interval=${intv}`)
+      const res = await axios.get(`${process.env.MODE ? 'https://mysterious-garden-30716.herokuapp.com' : 'http://localhost:3000'}/api/daily?date=${moment(date).format('YYYY/MM/DD')}&interval=${intv}`)
       setData(res.data)
     } catch (err) {
       setData([])
