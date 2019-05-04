@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import { Router, Link } from '@reach/router'
-import styled from 'styled-components'
-import Dashboard from './Dashboard.jsx'
-import socketIOClient from 'socket.io-client'
-import '../styles/app.scss'
+import React, { useState, useEffect } from 'react';
+import { Router, Link } from '@reach/router';
+import styled from 'styled-components';
+import Dashboard from './Dashboard.jsx';
+import socketIOClient from 'socket.io-client';
+import '../styles/app.scss';
 
 const CenteredDiv = styled.div`
   display: flex;
@@ -27,11 +27,11 @@ const CenteredDiv = styled.div`
   }
 
   #arundo {
-    color: #0182C8;
+    color: #0182c8;
   }
 
   em {
-    color: pink;
+    color: #f44336;
     font-style: normal;
     font-size: 2rem;
     display: block;
@@ -39,20 +39,29 @@ const CenteredDiv = styled.div`
       font-size: 1.5rem;
     }
   }
-`
+`;
 
 export default function App() {
-  const [socket, setSocket] = useState(null)
+  const [socket, setSocket] = useState(null);
 
-  useEffect(
-    () => { setSocket(socketIOClient(`${process.env.MODE ? 'https://mysterious-garden-30716.herokuapp.com' : 'http://localhost:3000'}`)) },
-    []
-  )
+  useEffect(() => {
+    setSocket(
+      socketIOClient(
+        `${
+          process.env.MODE
+            ? 'https://mysterious-garden-30716.herokuapp.com'
+            : 'http://localhost:3000'
+        }`
+      )
+    );
+  }, []);
 
   return (
     <CenteredDiv>
-      <h1>Welcome to the <span id='arundo'>Arundo</span> <em>Women's 2019 Hackathon</em></h1>
+      <h1>
+        Welcome to the <span id='arundo'>Arundo</span> <em>Women's 2019 Hackathon</em>
+      </h1>
       <Dashboard socket={socket} />
     </CenteredDiv>
-  )
+  );
 }

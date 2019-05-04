@@ -7,13 +7,14 @@
 body {
   color: #222;
   background-color: #fff;
-  font-family: sans-serif;
+  // font-family: sans-serif;
   font-weight: lighter;
   font-size: 62.5%;
   height: 100%;
   width: 100%;
   position: relative;
   -webkit-text-size-adjust: 100%;
+  font-family: 'Fira Sans', sans-serif;
 }
 
 #app {
@@ -21,8 +22,9 @@ body {
   flex-flow: column;
   justify-content: stretch;
   min-height: 100%;
+  background-color: #0d0d0d;
+  background-image: url('https://www.transparenttextures.com/patterns/cross-stripes.png');
   overflow: hidden;
-  background-color: black;
 }
 
 pre {
