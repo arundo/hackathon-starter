@@ -8,6 +8,20 @@ text-align: left;
 h3 {
   color: #0182C8;
 }
+span {
+  color: pink;
+  font-size: .5rem;
+  margin: .5rem;
+  background-color: #0182C8;
+  padding: .3rem;
+  border-radius: .3rem;
+  cursor: pointer;
+  transition: all .5s;
+}
+span:hover {
+  background-color: black;
+  transition: all .5s;
+}
 div {
   display: flex;
   margin: .5rem 0;
@@ -27,6 +41,7 @@ button {
   transition: all .5s;
   background-color: #0182C8;
   color: pink;
+  cursor: pointer;
 }
 button:hover {
   background-color: black;

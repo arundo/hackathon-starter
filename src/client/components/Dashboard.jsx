@@ -27,11 +27,16 @@ const Dashboard = ({ socket }) => {
   const [tTempLine, setTTempLine] = useState(null)
   const [oTempLine, setOTempLine] = useState(null)
   const [streamObj, setStreamObj] = useState({})
+  const [live, setLive] = useState(false)
   
   useEffect(() => {
-    socket && socket.on('stream_in', obj => setStreamObj(obj) )
-    socket && socket.emit('stream')
+    socket && socket.on('stream_in', obj => setStreamObj(obj))
   }, [socket])
+
+  useEffect(() => {
+    socket && live && socket.emit('stream')
+    socket && !live && socket.emit('end_stream')
+  }, [live])
 
   useEffect(() => {
     date
@@ -55,7 +60,11 @@ const Dashboard = ({ socket }) => {
     <DashboardContainer>
       <TitleContainer>
         <TitleBoard>
-          <h3>Daily Temperature From an Indoor Thermostat</h3>
+          <h3>
+            Daily Temperature From an Indoor Thermostat 
+            <span onClick={() => setLive(!live)}>Live Demo</span>
+            <em>{live && streamObj.outside_temp}</em>
+          </h3>
           <div>
             <button onClick={() => { setDate(moment(date).add(-7, 'days').format('YYYY-MM-DD')) }} >
               {'<<'}
