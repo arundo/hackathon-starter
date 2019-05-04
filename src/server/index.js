@@ -18,4 +18,4 @@ io.on('connection', socket => {
 app.use('/api', api)
 
 // app.start()
-httpServer.listen(3000, () => { console.log('listening to 3000') })
+httpServer.listen(process.env.PORT || 3000, () => { console.log('listening to 3000') })
