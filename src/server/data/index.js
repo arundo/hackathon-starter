@@ -1,49 +1,29 @@
-import fs from 'fs'
-import path from 'path'
 const rawData = require('./data.json')
 
 const numericKeys = [
-  "current_temp",
-  "target_temp",
-  "outside_temp",
-  "heater_val",
-  "humidity",
-  "outside",
-  "outside_humidity",
-  "pressure",
-  "wind_speed",
-  "wind_degrees",
-  "precip_today",
-  "auto_away",
-  "local_epoch"
+  'current_temp',
+  'target_temp',
+  'outside_temp',
+  'heater_val',
+  'humidity',
+  'outside',
+  'outside_humidity',
+  'pressure',
+  'wind_speed',
+  'wind_degrees',
+  'precip_today',
+  'auto_away',
+  'local_epoch'
 ]
 
 const keysToKeep = [
-  "current_temp",
-  "target_temp",
-  "outside_temp",
-  "heater_val",
-  "humidity",
-  "outside_humidity",
+  'current_temp',
+  'target_temp',
+  'outside_temp',
+  'heater_val',
+  'humidity',
+  'outside_humidity'
 ]
-
-const filteredData = rawData.filter(record => parseInt(record.local_epoch) > 1541045844)
-const cleanedData = filteredData.map(record => {
-  record["outside_humidity"] = record.outside_humiity.replace("%", "")
-  const newRecord = {time: record.time}
-  Object.keys(record).forEach(key => {
-    if(keysToKeep.includes(key)){
-      if (numericKeys.includes(key)){
-        newRecord[key] = Number(record[key])
-      } else if (key === 'heater_state') {
-        newRecord[key] = record[key] === 'TRUE'
-      } else {
-        newRecord[key] = record[key]
-      }
-    }
-  })
-  return newRecord
-})
 
 const chunkByDay = data =>
   data.reduce((acc, curr) => {
@@ -59,6 +39,23 @@ const chunkByDay = data =>
     return acc
   }, {})
 
+const transformRecord = record => {
+  record['outside_humidity'] = record.outside_humiity.replace('%', '')
+  const newRecord = { time: record.time }
+  Object.keys(record).forEach(key => {
+    if (keysToKeep.includes(key)) {
+      if (numericKeys.includes(key)) {
+        newRecord[key] = Number(record[key])
+      } else if (key === 'heater_state') {
+        newRecord[key] = record[key] === 'TRUE'
+      } else {
+        newRecord[key] = record[key]
+      }
+    }
+  })
+  return newRecord
+}
+
 // const transformRecord = record => {
 //   Object.keys(record).forEach(key => {
 //     if (numericKeys.includes(key) && record[key]) {
@@ -71,4 +68,12 @@ const chunkByDay = data =>
 //   return record
 // }
 
-module.exports = chunkByDay(cleanedData)
+const filteredData = rawData.filter(record => {
+  return parseInt(record.local_epoch) > 1541045844
+})
+const cleanedData = filteredData.map(transformRecord)
+
+module.exports = {
+  data: chunkByDay(cleanedData),
+  transformRecord
+}

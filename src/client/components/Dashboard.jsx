@@ -19,22 +19,37 @@ import {
   DashboardContainer
 } from './Styled.jsx'
 
-const Dashboard = () => {
+const Dashboard = ({ socket }) => {
   const [data, setData] = useState([])
   const [date, setDate] = useState('2018-11-01')
   const [intv, setIntv] = useState(1)
   const [cTempLine, setCTempLine] = useState(null)
   const [tTempLine, setTTempLine] = useState(null)
   const [oTempLine, setOTempLine] = useState(null)
+  const [streamObj, setStreamObj] = useState({})
+  const [live, setLive] = useState(false)
+  
+  useEffect(() => {
+    socket && socket.on('stream_in', obj => setStreamObj(obj))
+  }, [socket])
+
+  useEffect(() => {
+    socket && live && socket.emit('stream')
+    socket && !live && socket.emit('end_stream')
+  }, [live])
 
   useEffect(() => {
     date
     getData()
   }, [date])
 
+  useEffect(() => {
+    console.log(streamObj)
+  }, [streamObj])
+
   const getData = async () => {
-    try{
-      const res = await axios.get(`http://localhost:3000/api/daily?date=${moment(date).format('YYYY/MM/DD')}&interval=${intv}`)
+    try {
+      const res = await axios.get(`${process.env.MODE ? 'https://mysterious-garden-30716.herokuapp.com' : 'http://localhost:3000'}/api/daily?date=${moment(date).format('YYYY/MM/DD')}&interval=${intv}`)
       setData(res.data)
     } catch (err) {
       setData([])
@@ -45,7 +60,11 @@ const Dashboard = () => {
     <DashboardContainer>
       <TitleContainer>
         <TitleBoard>
-          <h3>Daily Temperature From an Indoor Thermostat</h3>
+          <h3>
+            Daily Temperature From an Indoor Thermostat 
+            <span onClick={() => setLive(!live)}>Live Demo</span>
+            <em>{live && streamObj.outside_temp}</em>
+          </h3>
           <div>
             <button onClick={() => { setDate(moment(date).add(-7, 'days').format('YYYY-MM-DD')) }} >
               {'<<'}
